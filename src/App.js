@@ -1,3 +1,4 @@
+import kittay from './kittay.jpg'
 import React, { useReducer, useState } from 'react';
 import './App.css';
 const util = require('util')
@@ -117,19 +118,20 @@ function App() {
 
   return (
     <div className="wrapper">
+      <img src={kittay} alt="" width="80px"/>
       <h1>Mmyf</h1>
       {submitting &&
        <div>
          You are submitting the following:
-         <ul>
+          <ul style={{"listStyleType": "none", "padding": "0"}}>
            {Object.entries(formData).map(([name, value]) => (
-             <li key={name}><strong>{name}</strong>:{value.toString()}</li>
+             <li key={name}><strong>{name}</strong>:{util.inspect(value)}</li>
            ))}
          </ul>
         </div>
        }
       <p>
-      Existing Plan?
+      Join an Existing Plan?
       </p>
       <form>
         <fieldset>
@@ -147,7 +149,7 @@ function App() {
            <p>Plan Name</p>
            <input name="plan" placeholder="Let's go exploring!" size="50" onChange={handleChange}/>
            <p>Options</p>
-	  <ul style={{"list-style-type": "none"}}>
+	  <ul style={{"listStyleType": "none"}}>
 	    {buildOptions(10)}
 	      </ul>
          </label>
