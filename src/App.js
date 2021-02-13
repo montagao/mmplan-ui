@@ -66,7 +66,7 @@ function App() {
     };
 
     console.log("sending" + util.inspect(requestOptions))
-    fetch('http://mmyf.ca/api/v1/plan', requestOptions)
+    fetch('http://mmyf.ca/api/v1/plan/',  requestOptions)
         .then(response => response.json())
         .then(data => {
           console.log(data)
@@ -108,7 +108,7 @@ function App() {
     xhr.addEventListener('load', () => {
       console.log(xhr.responseText)
     })
-    xhr.open('GET', 'http://mmyf.ca/api/v1/plan')
+    xhr.open('GET', 'http://mmyf.ca/api/v1/plan/' + formData.joinId)
     xhr.send()
   }
 
@@ -135,7 +135,7 @@ function App() {
       </p>
       <form>
         <fieldset>
-         <input name="name" placeholder="plan id"/>
+         <input name="joinId" placeholder="plan id" onChange={handleChange}/>
 
          <button type="button" onClick={handleGetPlan} >Join a Plan!</button>
         </fieldset>
