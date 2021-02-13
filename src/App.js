@@ -65,7 +65,7 @@ function App() {
     };
 
     console.log("sending" + util.inspect(requestOptions))
-    fetch('http://127.0.0.1:8080/api/v1/plan', requestOptions)
+    fetch('http://mmyf.ca/api/v1/plan', requestOptions)
         .then(response => response.json())
         .then(data => {
           console.log(data)
@@ -107,7 +107,7 @@ function App() {
     xhr.addEventListener('load', () => {
       console.log(xhr.responseText)
     })
-    xhr.open('GET', 'http://127.0.0.1:8080/api/v1/plan')
+    xhr.open('GET', 'http://mmyf.ca/api/v1/plan')
     xhr.send()
   }
 
@@ -143,13 +143,13 @@ function App() {
       <fieldset>
          <label>
            <p>Your Name</p>
-           <input name="user" placeholder="Are u MontaMonta or Yifei?"size="50" onChange={handleChange}/>
+           <input name="user" placeholder="Are you MontaMonta or Yifei?"size="50" onChange={handleChange}/>
            <p>Plan Name</p>
            <input name="plan" placeholder="Let's go exploring!" size="50" onChange={handleChange}/>
            <p>Options</p>
-      <ol>
-    {buildOptions(10)}
-      </ol>
+	  <ul style={{"list-style-type": "none"}}>
+	    {buildOptions(10)}
+	      </ul>
          </label>
        <button type="submit">Make a New Plan!</button>
        </fieldset>
