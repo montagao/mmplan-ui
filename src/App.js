@@ -102,7 +102,7 @@ function App() {
     return optForms
   }
 
-  const getData = () => {
+  const handleGetPlan = () => {
     var xhr = new XMLHttpRequest()
 
     xhr.addEventListener('load', () => {
@@ -137,7 +137,7 @@ function App() {
         <fieldset>
          <input name="name" placeholder="plan id"/>
 
-         <button type="submit">Join a Plan!</button>
+         <button type="button" onClick={handleGetPlan} >Join a Plan!</button>
         </fieldset>
       </form>
 
@@ -153,7 +153,7 @@ function App() {
 	    {buildOptions(10)}
 	      </ul>
          </label>
-       <button type="submit">Make a New Plan!</button>
+       <button type="button" onClick={handleSubmit}>Make a New Plan!</button>
        </fieldset>
       </form>
     </div>
