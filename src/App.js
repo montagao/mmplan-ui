@@ -1,25 +1,164 @@
-import logo from './logo.svg';
+import React, { useReducer, useState } from 'react';
 import './App.css';
+const util = require('util')
+
+// TODO:
+// * form validaiton
+
+
+const initialPlanState = {
+  name: "",
+  plan: "",
+  options: {},
+}
+
+const formReducer = (state, event) => {
+  console.log(JSON.stringify(state))
+  if (event.type === "option") {
+    let options = Object.assign({}, state.options)
+    if (options[event.name] === undefined) {
+      options[event.name] = {}
+    }
+    if (event.isvalue === "true") {
+      console.log("found value")
+      options[event.name].value = event.value
+    } else {
+      options[event.name].name = event.value
+    }
+
+    return {
+     ...state,
+      options
+    }
+  }
+  return {
+   ...state,
+   [event.name]: event.value
+  }
+}
 
 function App() {
+  const [formData, setFormData] = useReducer(formReducer, initialPlanState);
+  const [submitting, setSubmitting] = useState(false)
+  const [planId, setPlanId] = useState(Date.now())
+
+  const handleSubmit = event => {
+    console.log(JSON.stringify(formData))
+    event.preventDefault();
+
+    var rBody = {
+      id: planId,
+      isComplete: false,
+      list1: JSON.stringify(formData.options),
+      list2: "",
+      name1: formData.name,
+      name2: "",
+      timestamp: Date.now().toString(),
+    }
+     // generate new planId
+    setPlanId(Date.now())
+
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(rBody),
+    };
+
+    console.log("sending" + util.inspect(requestOptions))
+    fetch('http://127.0.0.1:8080/api/v1/plan', requestOptions)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data)
+        });
+
+   setSubmitting(true);
+ }
+
+  const handleChange = event => {
+    setFormData({
+      name: event.target.name,
+      value: event.target.value,
+    });
+  }
+
+  const handleChangeOption = event => {
+    console.log("handle change opt!", event)
+    setFormData({
+      name: event.target.name,
+      value: event.target.value,
+      type: "option",
+      isvalue: event.target.attributes.isvalue !== undefined ? "true" : false
+    });
+  }
+
+  const buildOptions = numOptions => {
+    let optForms = []
+    for (let i = 0 ; i < numOptions; i++) {
+      optForms[i] = (
+        <li key={i} >  <input name={i} placeholder={"Option "+i} onChange={handleChangeOption}/> <input isvalue="true" name={i} placeholder="Score from 1-10" onChange={handleChangeOption}/> </li>
+      )
+    }
+    return optForms
+  }
+
+  const getData = () => {
+    var xhr = new XMLHttpRequest()
+
+    xhr.addEventListener('load', () => {
+      console.log(xhr.responseText)
+    })
+    xhr.open('GET', 'http://127.0.0.1:8080/api/v1/plan')
+    xhr.send()
+  }
+
+  // getData()
+
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="wrapper">
+      <h1>Mmyf</h1>
+      {submitting &&
+       <div>
+         You are submitting the following:
+         <ul>
+           {Object.entries(formData).map(([name, value]) => (
+             <li key={name}><strong>{name}</strong>:{value.toString()}</li>
+           ))}
+         </ul>
+        </div>
+       }
+      <p>
+      Existing Plan?
+      </p>
+      <form>
+        <fieldset>
+         <input name="name" placeholder="plan id"/>
+
+         <button type="submit">Join a Plan!</button>
+        </fieldset>
+      </form>
+
+      <form onSubmit={handleSubmit}>
+      <fieldset>
+         <label>
+           <p>Your Name</p>
+           <input name="user" placeholder="Are u MontaMonta or Yifei?"size="50" onChange={handleChange}/>
+           <p>Plan Name</p>
+           <input name="plan" placeholder="Let's go exploring!" size="50" onChange={handleChange}/>
+           <p>Options</p>
+      <ol>
+    {buildOptions(10)}
+      </ol>
+         </label>
+       <button type="submit">Make a New Plan!</button>
+       </fieldset>
+      </form>
     </div>
   );
 }
+
+
+
 
 export default App;
