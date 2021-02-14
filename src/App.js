@@ -99,7 +99,7 @@ function App() {
     let optForms = []
     for (let i = 0 ; i < numOptions; i++) {
       optForms[i] = (
-        <li key={i}>  <input name={i} placeholder={"Option "+i} onChange={handleChangeOption}/> <input isvalue="true" name={i} placeholder="Score from 1-10" onChange={handleChangeOption}/> </li>
+        <li key={i}>  <input name={i} placeholder={"Option "+i} onChange={handleChangeOption}/> <input isvalue="true" name={i} placeholder="Score from 0-10" onChange={handleChangeOption}/> </li>
       )
     }
     return optForms
