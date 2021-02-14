@@ -1,4 +1,4 @@
-import kittay from './kittay.jpg'
+import kittay from './kittay.png'
 import React, { useReducer, useState } from 'react';
 import './App.css';
 import FullPlan from './FullPlan.js'
@@ -150,7 +150,7 @@ function App() {
            <p>Plan Name</p>
            <input name="plan" placeholder="Let's go exploring!" size="50" onChange={handleChange}/>
            <p>Options</p>
-	  <ul style={{"listStyleType": "none"}}>
+	  <ul style={{"listStyleType": "none", "padding": "0"}}>
 	    {buildOptions(10)}
 	      </ul>
          </label>
