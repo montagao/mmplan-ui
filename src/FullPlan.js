@@ -7,8 +7,9 @@ class FullPlan extends React.Component {
     console.log(props)
     super(props)
     this.state = {
-      list2: JSON.parse(props.list2),
+      list2: Object.keys(props.list2).length !== 0 ? JSON.parse(props.list2) : {},
       name2: props.name2,
+      planSubmitted: Object.keys(props.list2).length !== 0,
     }
   }
 
@@ -49,7 +50,7 @@ class FullPlan extends React.Component {
       console.log(list2)
       return (
             <div>
-             Full Results!
+             Full Results Below:
             <ul style={{"listStyleType": "none", "padding": "0"}}>
             <div style={{"display": "inline-block"}}>
              <li key="options"><input style={{border: 0}} name="options" value="Options" readOnly={true} /> </li>
@@ -105,6 +106,8 @@ class FullPlan extends React.Component {
             console.log(data)
           });
 
+      this.setState({planSubmitted: true})
+
    }
 
     const onChangeName  = event => {
@@ -114,7 +117,11 @@ class FullPlan extends React.Component {
     const opts = this.renderOptions()
     return (
       <div>
+      {!this.state.planSubmitted &&
+        <div>
       Your name: <input name="name2" onChange={onChangeName} placeholder="Your name here"/>
+        </div>
+      }
       <br/>
       For plan:  <strong>{this.props.planName}</strong>
       <br/>

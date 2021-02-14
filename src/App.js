@@ -51,7 +51,7 @@ function App() {
     event.preventDefault();
 
     var rBody = {
-      id: planId,
+      id: Date.now(),
       isComplete: false,
       planName: formData.plan,
       list1: JSON.stringify(formData.options),
@@ -60,8 +60,6 @@ function App() {
       name2: "",
       timestamp: Date.now().toString(),
     }
-     // generate new planId
-    setPlanId(Date.now())
 
     const requestOptions = {
         method: 'POST',
@@ -73,9 +71,10 @@ function App() {
     fetch('http://mmyf.ca/api/v1/plan/',  requestOptions)
         .then(response => response.json())
         .then(data => {
+           // generate new planId
           console.log(data)
         });
-
+   setPlanId(rBody.id)
    setSubmitting(true);
  }
 
@@ -126,20 +125,14 @@ function App() {
       <h1>Mmyf</h1>
       {submitting &&
        <div>
-         You are submitting the following:
-          <ul style={{"listStyleType": "none", "padding": "0"}}>
-            <li>planId: {planId} </li>
-           {Object.entries(formData).map(([name, value]) => (
-             <li key={name}><strong>{name}</strong>:{util.inspect(value)}</li>
-           ))}
-         </ul>
-        </div>
+         New plan created at id:  {planId}, ask someone to join!
+      </div>
        }
-      <p>
-      Join an Existing Plan?
-      </p>
       <form>
         <fieldset>
+          <p>
+          Join an Existing Plan?
+          </p>
          <input name="joinId" placeholder="plan id" onChange={handleChange}/>
 
          <button type="button" onClick={handleGetPlan} >Join a Plan!</button>
