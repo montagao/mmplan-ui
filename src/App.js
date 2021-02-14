@@ -143,11 +143,11 @@ function App() {
          <input name="joinId" placeholder="plan id" onChange={handleChange}/>
 
          <button type="button" onClick={handleGetPlan} >Join a Plan!</button>
-        </fieldset>
-      </form>
     { showFullPlan &&
       <FullPlan {...fetchedPlan}></FullPlan>
     }
+        </fieldset>
+      </form>
 
       <form onSubmit={handleSubmit}>
       <fieldset>

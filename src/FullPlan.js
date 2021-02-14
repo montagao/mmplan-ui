@@ -7,8 +7,8 @@ class FullPlan extends React.Component {
     console.log(props)
     super(props)
     this.state = {
-      list2: {},
-      name2: {},
+      list2: JSON.parse(props.list2),
+      name2: props.name2,
     }
   }
 
@@ -17,8 +17,6 @@ class FullPlan extends React.Component {
     console.log(this.state)
     console.log(data)
     console.log(data.list1)
-    let list = JSON.parse(data.list1)
-    console.log(list)
 
     const handleValue = event => {
       this.setState({
@@ -33,6 +31,8 @@ class FullPlan extends React.Component {
     }
 
     if (this.props.isComplete === false){
+      let list = JSON.parse(data.list1)
+      console.log(list)
           return (
             <div>
              Enter your rating for the options:
@@ -42,8 +42,37 @@ class FullPlan extends React.Component {
            ))}
           </ul>
         </div>)
+    } else {
+      let list1 = JSON.parse(data.list1)
+      console.log(list1)
+      let list2 = Object.keys(this.props.list2).length === 0 ? JSON.parse(this.state.list2) : JSON.parse(this.props.list2)
+      console.log(list2)
+      return (
+            <div>
+             Full Results!
+            <ul style={{"listStyleType": "none", "padding": "0"}}>
+            <div style={{"display": "inline-block"}}>
+             <li key="options"><input style={{border: 0}} name="options" value="Options" readOnly={true} /> </li>
+           {Object.entries(list1).map(([key, entry]) => (
+             <li key={key}><input name={key} value={entry.name} readOnly={true} /> </li>
+           ))}
+           </div>
+            <div style={{"display": "inline-block"}}>
+             <li key="options"><input style={{border: 0}} name="options" value={this.props.name1 +  '\'s score'} readOnly={true} /> </li>
+           {Object.entries(list1).map(([key, entry]) => (
+             <li key={key}><input name={key} onChange={handleValue} value={entry.value}/> </li>
+           ))}
+           </div>
+            <div style={{"display": "inline-block"}}>
+             <li key="options"><input name="options" style={{border: 0}}  value={this.props.name2 + '\'s score'} readOnly={true} /> </li>
+           {Object.entries(list2).map(([key, entry]) => (
+             <li key={key}><input name={key} onChange={handleValue} value={entry.value}/> </li>
+           ))}
+           </div>
+          </ul>
+        </div>
+      )
     }
-    return JSON.stringify(data)
   }
 
 
