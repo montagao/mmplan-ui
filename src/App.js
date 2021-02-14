@@ -50,6 +50,7 @@ function App() {
     var rBody = {
       id: planId,
       isComplete: false,
+      planName: formData.plan,
       list1: JSON.stringify(formData.options),
       list2: "",
       name1: formData.name,
@@ -96,11 +97,14 @@ function App() {
     let optForms = []
     for (let i = 0 ; i < numOptions; i++) {
       optForms[i] = (
-        <li key={i} >  <input name={i} placeholder={"Option "+i} onChange={handleChangeOption}/> <input isvalue="true" name={i} placeholder="Score from 1-10" onChange={handleChangeOption}/> </li>
+        <li key={i}>  <input name={i} placeholder={"Option "+i} onChange={handleChangeOption}/> <input isvalue="true" name={i} placeholder="Score from 1-10" onChange={handleChangeOption}/> </li>
       )
     }
     return optForms
   }
+
+
+  let fullPlan = null
 
   const handleGetPlan = () => {
     var xhr = new XMLHttpRequest()
@@ -111,8 +115,6 @@ function App() {
     xhr.open('GET', 'http://mmyf.ca/api/v1/plan/' + formData.joinId)
     xhr.send()
   }
-
-  // getData()
 
 
 
@@ -145,7 +147,7 @@ function App() {
       <fieldset>
          <label>
            <p>Your Name</p>
-           <input name="user" placeholder="Are you MontaMonta or Yifei?"size="50" onChange={handleChange}/>
+           <input name="name" placeholder="Are you MontaMonta or Yifei?"size="50" onChange={handleChange}/>
            <p>Plan Name</p>
            <input name="plan" placeholder="Let's go exploring!" size="50" onChange={handleChange}/>
            <p>Options</p>
