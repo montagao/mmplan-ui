@@ -85,6 +85,7 @@ class FullPlan extends React.Component {
       console.log(list1zscores)
       console.log(list2zscores)
       console.log(sumzscores)
+      let maxIndex = indexOfMax(sumzscores)
       return (
             <div>
              Planning already complete! Full Results Below:
@@ -110,7 +111,9 @@ class FullPlan extends React.Component {
             <div style={{"display": "inline-block"}}>
              <li key="options"><input name="options" style={{border: 0}}  value="Sum of Z-scores" readOnly={true} /> </li>
            {sumzscores.map((entry, key) => (
-             <li key={key}><input input="number"  step='0.01' name={key} onChange={handleValue} value={entry}/> </li>
+             <li key={key}><input input="number" style={
+                key === maxIndex ? {fontWeight: 'bold'} :{fontWeight: 'normal'}}
+               step='0.01' name={key} onChange={handleValue} value={entry}/> </li>
            ))}
            </div>
           </ul>
@@ -179,4 +182,23 @@ class FullPlan extends React.Component {
   }
 }
 
+function indexOfMax(arr) {
+    if (arr.length === 0) {
+        return -1;
+    }
+
+    var max = arr[0];
+    var maxIndex = 0;
+
+    for (var i = 1; i < arr.length; i++) {
+        if (arr[i] > max) {
+            maxIndex = i;
+            max = arr[i];
+        }
+    }
+
+    return maxIndex;
+}
+
 export default FullPlan;
+
