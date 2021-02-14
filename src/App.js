@@ -1,6 +1,7 @@
 import kittay from './kittay.jpg'
 import React, { useReducer, useState } from 'react';
 import './App.css';
+import FullPlan from './FullPlan.js'
 const util = require('util')
 
 // TODO:
@@ -104,7 +105,7 @@ function App() {
   }
 
 
-  let fullPlan = null
+  let fullPlanLoaded = false
 
   const handleGetPlan = () => {
     var xhr = new XMLHttpRequest()
@@ -112,6 +113,7 @@ function App() {
     xhr.addEventListener('load', () => {
       console.log(xhr.responseText)
     })
+    fullPlanLoaded = true
     xhr.open('GET', 'http://mmyf.ca/api/v1/plan/' + formData.joinId)
     xhr.send()
   }
@@ -126,6 +128,7 @@ function App() {
        <div>
          You are submitting the following:
           <ul style={{"listStyleType": "none", "padding": "0"}}>
+            <li>planId: {planId} </li>
            {Object.entries(formData).map(([name, value]) => (
              <li key={name}><strong>{name}</strong>:{util.inspect(value)}</li>
            ))}
@@ -135,6 +138,9 @@ function App() {
       <p>
       Join an Existing Plan?
       </p>
+    { fullPlanLoaded &&
+      <FullPlan props={formData}></FullPlan>
+    }
       <form>
         <fieldset>
          <input name="joinId" placeholder="plan id" onChange={handleChange}/>
