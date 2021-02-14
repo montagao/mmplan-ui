@@ -1,5 +1,9 @@
 import React  from 'react';
+import { create, all }  from 'mathjs';
 const util = require('util')
+
+const config = { }
+const math = create(all, config)
 
 class FullPlan extends React.Component {
 
@@ -48,6 +52,39 @@ class FullPlan extends React.Component {
       console.log(list1)
       let list2 = Object.keys(this.props.list2).length === 0 ? JSON.parse(this.state.list2) : JSON.parse(this.props.list2)
       console.log(list2)
+
+      let list1scores = []
+      // calculate the zscore of each, and then calculate the sum of z-scores
+      Object.entries(list1).map(([key, entry]) => (
+        list1scores.push(parseInt(entry.value))
+      ))
+
+      let list2scores = []
+      // calculate the zscore of each, and then calculate the sum of z-scores
+      Object.entries(list2).map(([key, entry]) => (
+        list2scores.push(parseInt(entry.value))
+      ))
+
+
+      let list1sd = math.std(list1scores)
+      let list1mean = math.mean(list1scores)
+      let list1zscores = list1scores.map( (score, i) => {
+        return  (score - list1mean)/ list1sd
+      })
+      let list2sd = math.std(list2scores)
+      let list2mean = math.mean(list2scores)
+      let list2zscores = list2scores.map( (score, i) => {
+        return  (score - list2mean)/ list2sd
+      })
+
+      let sumzscores = list2zscores.map( (score, i) => {
+        return  score + list1zscores[i]
+      })
+
+      console.log(list1scores)
+      console.log(list1zscores)
+      console.log(list2zscores)
+      console.log(sumzscores)
       return (
             <div>
              Planning already complete! Full Results Below:
@@ -68,6 +105,12 @@ class FullPlan extends React.Component {
              <li key="options"><input name="options" style={{border: 0}}  value={this.props.name2 + '\'s score'} readOnly={true} /> </li>
            {Object.entries(list2).map(([key, entry]) => (
              <li key={key}><input name={key} onChange={handleValue} value={entry.value}/> </li>
+           ))}
+           </div>
+            <div style={{"display": "inline-block"}}>
+             <li key="options"><input name="options" style={{border: 0}}  value="Sum of Z-scores" readOnly={true} /> </li>
+           {sumzscores.map((entry, key) => (
+             <li key={key}><input input="number"  step='0.01' name={key} onChange={handleValue} value={entry}/> </li>
            ))}
            </div>
           </ul>
