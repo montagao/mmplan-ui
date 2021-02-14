@@ -129,7 +129,7 @@ class FullPlan extends React.Component {
 
 
       {opts}
-       <button onClick={handleSubmit} type="button">Show plan results!</button>
+       <button onClick={handleSubmit} type="button">Submit your vote!</button>
       <br/>
       </div>
     )
