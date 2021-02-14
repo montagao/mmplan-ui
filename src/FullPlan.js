@@ -7,9 +7,9 @@ class FullPlan extends React.Component {
     console.log(props)
     super(props)
     this.state = {
-      list2: Object.keys(props.list2).length !== 0 ? JSON.parse(props.list2) : {},
+      list2: !!props.list2 ? JSON.parse(props.list2) : {},
       name2: props.name2,
-      planSubmitted: Object.keys(props.list2).length !== 0,
+      planSubmitted: !!props.list2,
     }
   }
 
@@ -50,7 +50,7 @@ class FullPlan extends React.Component {
       console.log(list2)
       return (
             <div>
-             Full Results Below:
+             Planning already complete! Full Results Below:
             <ul style={{"listStyleType": "none", "padding": "0"}}>
             <div style={{"display": "inline-block"}}>
              <li key="options"><input style={{border: 0}} name="options" value="Options" readOnly={true} /> </li>
@@ -117,7 +117,7 @@ class FullPlan extends React.Component {
     const opts = this.renderOptions()
     return (
       <div>
-      {!this.state.planSubmitted &&
+      {!!!this.props.name2 &&
         <div>
       Your name: <input name="name2" onChange={onChangeName} placeholder="Your name here"/>
         </div>
