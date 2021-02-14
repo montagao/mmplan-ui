@@ -43,6 +43,8 @@ function App() {
   const [formData, setFormData] = useReducer(formReducer, initialPlanState);
   const [submitting, setSubmitting] = useState(false)
   const [planId, setPlanId] = useState(Date.now())
+  const [showFullPlan, setShowFullPlan] = useState(false)
+  const [fetchedPlan, setFetchedPlan] = useState({})
 
   const handleSubmit = event => {
     console.log(JSON.stringify(formData))
@@ -105,15 +107,13 @@ function App() {
   }
 
 
-  let fullPlanLoaded = false
-
   const handleGetPlan = () => {
     var xhr = new XMLHttpRequest()
 
     xhr.addEventListener('load', () => {
-      console.log(xhr.responseText)
+      setFetchedPlan(JSON.parse(xhr.responseText))
+      setShowFullPlan(true)
     })
-    fullPlanLoaded = true
     xhr.open('GET', 'http://mmyf.ca/api/v1/plan/' + formData.joinId)
     xhr.send()
   }
@@ -138,9 +138,6 @@ function App() {
       <p>
       Join an Existing Plan?
       </p>
-    { fullPlanLoaded &&
-      <FullPlan props={formData}></FullPlan>
-    }
       <form>
         <fieldset>
          <input name="joinId" placeholder="plan id" onChange={handleChange}/>
@@ -148,6 +145,9 @@ function App() {
          <button type="button" onClick={handleGetPlan} >Join a Plan!</button>
         </fieldset>
       </form>
+    { showFullPlan &&
+      <FullPlan {...fetchedPlan}></FullPlan>
+    }
 
       <form onSubmit={handleSubmit}>
       <fieldset>
