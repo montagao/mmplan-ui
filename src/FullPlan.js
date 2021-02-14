@@ -8,6 +8,8 @@ class FullPlan extends React.Component {
 
   renderOptions() {
     var data = this.props.data
+    console.log(data)
+    console.log(data.name)
     return <h1> {data.name} </h1>
   }
 
